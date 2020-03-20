@@ -19,7 +19,7 @@ if [ -d "$HOME/.bin" ]; then
 fi
 
 # set vi mode (Enabled in /etc/bash.bashrc)
-# set -o vi
+set -o vi
 
 # Disable <C-s> functionality for vim.surround
 stty stop ""
@@ -51,7 +51,6 @@ shopt -s globstar
 
 # Set custom PS1 prompt
 if [ -f ~/.psone ]; then
-    # shellcheck source=/home/chuck/.psone
     . ~/.psone;
 fi
 
@@ -66,13 +65,11 @@ fi
 
 # Alias definitions.
 if [ -f ~/.bash_aliases ]; then
-    # shellcheck source=/home/chuck/.bash_aliases
     . ~/.bash_aliases
 fi
 
 # Function definitions.
 if [ -f ~/.bash_functions ]; then
-    # shellcheck source=/home/chuck/.bash_functions
     . ~/.bash_functions
 fi
 
@@ -80,15 +77,23 @@ fi
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+      . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+      . /etc/bash_completion
+    fi
 fi
 
 # Start Keychain for SSH Authentication
-eval "$(keychain --eval --quiet gaming)"
+if [ -f "$HOME/.ssh/gaming" ]; then
+    eval "$(keychain --eval --quiet gaming)"
+  elif [ -f "$HOME/.ssh/p50" ]; then
+    eval "$(keychain --eval --quiet p50)"
+  elif [ -f "$HOME/.ssh/x200" ]; then
+    eval "$(keychain --eval --quiet x200)"
+  elif [ -f "$HOME/.ssh/x230" ]; then
+    eval "$(keychain --eval --quiet x230)"
+fi
 
 # Set SSH to use gpg-agent
 #unset SSH_AGENT_PID
@@ -103,6 +108,8 @@ eval "$(keychain --eval --quiet gaming)"
 # Refresh gpg-agent tty in case user switches into an X session
 #gpg-connect-agent updatestartuptty /bye >/dev/null
 
-source /home/chuck/.local/bin/fixtag
+if [ -d "$HOME/.local/bin/fixtag" ]; then
+    source /home/chuck/.local/bin/fixtag
+fi
 
 export LESS=--mouse
