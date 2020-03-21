@@ -35,3 +35,11 @@ addash() {
 dotodash() {
  rename -v 's/. / - /' -- *.{flac,mp3}
 }
+
+findflac() {
+  find . -iname *.flac
+}
+
+findmp3() {
+  find . -iname *.mp3
+}
