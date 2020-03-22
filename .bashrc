@@ -98,26 +98,26 @@ function start_agent {
 }
 
 # Source SSH settings, if applicable
-if [ -f "${SSH_ENV}" ]; then
-    . "${SSH_ENV}" > /dev/null
-    #ps ${SSH_AGENT_PID} doesn't work under cywgin
-    ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
-        start_agent;
-    }
-else
-    start_agent;
-fi
+#if [ -f "${SSH_ENV}" ]; then
+#    . "${SSH_ENV}" > /dev/null
+#    #ps ${SSH_AGENT_PID} doesn't work under cywgin
+#    ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+#        start_agent;
+#    }
+#else
+#    start_agent;
+#fi
 
 # Start Keychain for SSH Authentication
-#if [ -f "$HOME/.ssh/gaming" ]; then
-#    eval "$(keychain --eval --quiet gaming)"
-#  elif [ -f "$HOME/.ssh/p50" ]; then
-#    eval "$(keychain --eval --quiet p50)"
-#  elif [ -f "$HOME/.ssh/x200" ]; then
-#    eval "$(keychain --eval --quiet x200)"
-#  elif [ -f "$HOME/.ssh/x230" ]; then
-#    eval "$(keychain --eval --quiet x230)"
-#fi
+if [ -f "$HOME/.ssh/gaming" ]; then
+    eval "$(keychain --eval --quiet gaming)"
+  elif [ -f "$HOME/.ssh/p50" ]; then
+    eval "$(keychain --eval --quiet p50)"
+  elif [ -f "$HOME/.ssh/x200" ]; then
+    eval "$(keychain --eval --quiet x200)"
+  elif [ -f "$HOME/.ssh/x230" ]; then
+    eval "$(keychain --eval --quiet x230)"
+fi
 
 ###########################################################
 # GPG SSH
