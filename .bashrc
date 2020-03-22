@@ -8,6 +8,15 @@ case $- in
       *) return;;
 esac
 
+# set vi mode (Enabled in /etc/bash.bashrc)
+set -o vi
+
+# Disable <C-s> functionality for vim.surround
+stty stop ""
+
+###########################################################
+# PATH
+###########################################################
 # Add ~/.local/bin to $PATH if it exists
 if [ -d "$HOME/.local/bin" ]; then
     PATH="$HOME/.local/bin:$PATH"
@@ -18,12 +27,9 @@ if [ -d "$HOME/.bin" ]; then
     PATH="$PATH:$HOME/.bin"
 fi
 
-# set vi mode (Enabled in /etc/bash.bashrc)
-set -o vi
-
-# Disable <C-s> functionality for vim.surround
-stty stop ""
-
+###########################################################
+# HISTORY
+###########################################################
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -38,6 +44,9 @@ HISTTIMEFORMAT="%F %H:%M: "
 # append to the history file, don't overwrite it
 shopt -s histappend
 
+###########################################################
+#
+###########################################################
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
@@ -49,11 +58,12 @@ shopt -s globstar
 # make less more friendly for non-text input files, see lesspipe(1)
 #[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# Set custom PS1 prompt
-if [ -f ~/.psone ]; then
-    . ~/.psone;
-fi
+# Configure less
+export LESS=--mouse
 
+###########################################################
+#
+###########################################################
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     if test -r ~/.dircolors; then
@@ -61,16 +71,6 @@ if [ -x /usr/bin/dircolors ]; then
     else 
 	eval "$(dircolors -b)"
     fi
-fi
-
-# Alias definitions.
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-
-# Function definitions.
-if [ -f ~/.bash_functions ]; then
-    . ~/.bash_functions
 fi
 
 # enable programmable completion features (you don't need to enable
@@ -84,17 +84,44 @@ if ! shopt -oq posix; then
     fi
 fi
 
-# Start Keychain for SSH Authentication
-if [ -f "$HOME/.ssh/gaming" ]; then
-    eval "$(keychain --eval --quiet gaming)"
-  elif [ -f "$HOME/.ssh/p50" ]; then
-    eval "$(keychain --eval --quiet p50)"
-  elif [ -f "$HOME/.ssh/x200" ]; then
-    eval "$(keychain --eval --quiet x200)"
-  elif [ -f "$HOME/.ssh/x230" ]; then
-    eval "$(keychain --eval --quiet x230)"
+###########################################################
+# SSH 
+###########################################################
+SSH_ENV="$HOME/.ssh/environment"
+
+function start_agent {
+    echo "Initialising new SSH agent..."
+    /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+    echo succeeded
+    chmod 600 "${SSH_ENV}"
+    . "${SSH_ENV}" > /dev/null
+}
+
+# Source SSH settings, if applicable
+if [ -f "${SSH_ENV}" ]; then
+    . "${SSH_ENV}" > /dev/null
+    #ps ${SSH_AGENT_PID} doesn't work under cywgin
+    ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+        start_agent;
+    }
+else
+    start_agent;
 fi
 
+# Start Keychain for SSH Authentication
+#if [ -f "$HOME/.ssh/gaming" ]; then
+#    eval "$(keychain --eval --quiet gaming)"
+#  elif [ -f "$HOME/.ssh/p50" ]; then
+#    eval "$(keychain --eval --quiet p50)"
+#  elif [ -f "$HOME/.ssh/x200" ]; then
+#    eval "$(keychain --eval --quiet x200)"
+#  elif [ -f "$HOME/.ssh/x230" ]; then
+#    eval "$(keychain --eval --quiet x230)"
+#fi
+
+###########################################################
+# GPG SSH
+###########################################################
 # Set SSH to use gpg-agent
 #unset SSH_AGENT_PID
 #if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
@@ -108,8 +135,20 @@ fi
 # Refresh gpg-agent tty in case user switches into an X session
 #gpg-connect-agent updatestartuptty /bye >/dev/null
 
-if [ -d "$HOME/.local/bin/fixtag" ]; then
-    source /home/chuck/.local/bin/fixtag
+###########################################################
+# LOAD FILES
+###########################################################
+# Set custom PS1 prompt
+if [ -f ~/.psone ]; then
+    . ~/.psone;
 fi
 
-export LESS=--mouse
+# Alias definitions.
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+# Function definitions.
+if [ -f ~/.bash_functions ]; then
+    . ~/.bash_functions
+fi
