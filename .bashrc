@@ -59,7 +59,7 @@ shopt -s globstar
 #[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # Configure less
-export LESS=--mouse
+export LESS='--mouse --SILENT --IGNORE-CASE --status-column --LONG-PROMPT --HILITE-UNREAD --tabs=4 --window=-4'
 
 ###########################################################
 #
