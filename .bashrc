@@ -60,6 +60,7 @@ shopt -s globstar
 
 # Configure less
 export LESS='--mouse --SILENT --IGNORE-CASE --status-column --LONG-PROMPT --HILITE-UNREAD --tabs=4 --window=-4'
+export RANGER_LOAD_DEFAULT_RC=FALSE
 
 ###########################################################
 #
