@@ -43,3 +43,7 @@ findflac() {
 findmp3() {
   find . -iname *.mp3
 }
+
+gitcheck() {
+    find . -maxdepth 1 -mindepth 1 -type d -exec sh -c '(echo {} && cd {} && git fetch --all; git status -uno && echo )' \;
+}
