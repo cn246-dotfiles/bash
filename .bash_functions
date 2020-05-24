@@ -1,5 +1,11 @@
 # Functions
 
+# mknote - Creates a file in a common directory then opens it in vim
+mknote () {
+  notedir=/home/chuck/Nextcloud/Notes
+  vim "${notedir}/$1"
+}
+
 # mkrole - Makes directories and the main.yml for a given role
 mkrole () {
   dirs=(defaults tasks templates files)
