@@ -20,6 +20,7 @@ mkrole () {
 }
 
 # divider - Create divider the full width of terminal screen
+# Call it by "divider =" for a row of =
 divider() {
  if [[ -z ${1} ]];
  then
@@ -28,8 +29,6 @@ divider() {
  fi
  for x in $(seq 1 $(tput cols)); do printf "${1}"; done
     echo
-    
-# Call it by "divider =" for a row of =
 }
 
 # Change name from "01 Song.flac" to "01 - Song.flac"
@@ -51,5 +50,5 @@ findmp3() {
 }
 
 gitcheck() {
-    find . -maxdepth 1 -mindepth 1 -type d -exec sh -c '(echo {} && cd {} && git fetch --all; git status -uno && echo )' \;
+    find . -maxdepth 1 -mindepth 1 -type d -exec sh -c '(echo {} && cd {} && git fetch --all; git status -uno && echo)' \;
 }

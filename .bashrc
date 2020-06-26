@@ -56,10 +56,12 @@ shopt -s checkwinsize
 shopt -s globstar
 
 # make less more friendly for non-text input files, see lesspipe(1)
-#[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # Configure less
-export LESS='--mouse --SILENT --IGNORE-CASE --status-column --LONG-PROMPT --HILITE-UNREAD --tabs=4 --window=-4'
+export LESS='--mouse --SILENT --status-column --LONG-PROMPT --HILITE-UNREAD --tabs=4 --window=-4'
+
+# Set ranger env variables
 export RANGER_LOAD_DEFAULT_RC=FALSE
 
 ###########################################################
@@ -67,8 +69,8 @@ export RANGER_LOAD_DEFAULT_RC=FALSE
 ###########################################################
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-    if test -r ~/.dircolors; then
-	eval "$(dircolors -b ~/.dircolors)" 
+    if test -r $HOME/.dircolors; then
+	eval "$(dircolors -b $HOME/.dircolors)" 
     else 
 	eval "$(dircolors -b)"
     fi
@@ -140,16 +142,20 @@ fi
 # LOAD FILES
 ###########################################################
 # Set custom PS1 prompt
-if [ -f ~/.psone ]; then
-    . ~/.psone;
+if [ -f "$HOME/.psone" ]; then
+    . "$HOME/.psone"
 fi
 
 # Alias definitions.
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+if [ -f "$HOME/.bash_aliases" ]; then
+    . "$HOME/.bash_aliases"
 fi
 
 # Function definitions.
-if [ -f ~/.bash_functions ]; then
-    . ~/.bash_functions
+if [ -f "$HOME/.bash_functions" ]; then
+    . "$HOME/.bash_functions"
+fi
+
+if [ -f "$HOME/.dotfiles/suckless/suck_func" ]; then
+    . "$HOME/.dotfiles/suckless/suck_func"
 fi

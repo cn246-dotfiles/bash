@@ -55,7 +55,7 @@ alias .....='cd ../../../..'
 alias neofetch='neofetch --disable Model Uptime --colors 4 4 2 6 3 7 --ascii_colors 2 1'
 
 # Python
-alias server='python3 -m http.server'
+alias pserv='python3 -m http.server'
 
 # Sudo
 alias sudo='sudo '
