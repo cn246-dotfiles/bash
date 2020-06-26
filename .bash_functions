@@ -2,7 +2,7 @@
 
 # mknote - Creates a file in a common directory then opens it in vim
 mknote () {
-  notedir=/home/chuck/Nextcloud/Notes
+  notedir="$HOME/Nextcloud/Notes"
   vim "${notedir}/$1"
 }
 
