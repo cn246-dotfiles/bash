@@ -1,6 +1,4 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
 
 # If not running interactively, don't do anything
 case $- in
@@ -13,19 +11,6 @@ set -o vi
 
 # Disable <C-s> functionality for vim.surround
 stty stop ""
-
-###########################################################
-# PATH
-###########################################################
-# Add ~/.local/bin to $PATH if it exists
-if [ -d "$HOME/.local/bin" ]; then
-    PATH="$HOME/.local/bin:$PATH"
-fi
-
-# Add ~/.bin to $PATH if it exists
-if [ -d "$HOME/.bin" ]; then
-    PATH="$PATH:$HOME/.bin"
-fi
 
 ###########################################################
 # HISTORY
@@ -90,27 +75,6 @@ fi
 ###########################################################
 # SSH 
 ###########################################################
-SSH_ENV="$HOME/.ssh/environment"
-
-function start_agent {
-    echo "Initialising new SSH agent..."
-    /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
-    echo succeeded
-    chmod 600 "${SSH_ENV}"
-    . "${SSH_ENV}" > /dev/null
-}
-
-# Source SSH settings, if applicable
-#if [ -f "${SSH_ENV}" ]; then
-#    . "${SSH_ENV}" > /dev/null
-#    #ps ${SSH_AGENT_PID} doesn't work under cywgin
-#    ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
-#        start_agent;
-#    }
-#else
-#    start_agent;
-#fi
-
 # Start Keychain for SSH Authentication
 if [ -f "$HOME/.ssh/gaming" ]; then
     eval "$(keychain --eval --quiet gaming)"
@@ -142,8 +106,8 @@ fi
 # LOAD FILES
 ###########################################################
 # Set custom PS1 prompt
-if [ -f "$HOME/.psone" ]; then
-    . "$HOME/.psone"
+if [ -f "$HOME/.bash_prompt" ]; then
+    . "$HOME/.bash_prompt"
 fi
 
 # Alias definitions.
@@ -154,8 +118,4 @@ fi
 # Function definitions.
 if [ -f "$HOME/.bash_functions" ]; then
     . "$HOME/.bash_functions"
-fi
-
-if [ -f "$HOME/.dotfiles/suckless/suck_func" ]; then
-    . "$HOME/.dotfiles/suckless/suck_func"
 fi
