@@ -6,7 +6,7 @@ case $- in
       *) return;;
 esac
 
-# set vi mode (Enabled in /etc/bash.bashrc)
+# set vi mode
 set -o vi
 
 # Disable <C-s> functionality for vim.surround
@@ -42,12 +42,6 @@ shopt -s globstar
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
-# Configure less
-export LESS='--mouse --SILENT --status-column --LONG-PROMPT --HILITE-UNREAD --tabs=4 --window=-4'
-
-# Set ranger env variables
-export RANGER_LOAD_DEFAULT_RC=FALSE
 
 ###########################################################
 #
