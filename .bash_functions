@@ -6,6 +6,16 @@ mknote () {
   vim "${notedir}/$1"
 }
 
+# mkplay - Makes directories for the given playbook
+mkplay() {
+  dirs=(group_vars host_vars roles)
+  for dir in "${dirs[@]}"; do
+    mkdir -p "$1"/"$dir";
+  done
+
+  printf "%s\n" "---" "- name: " "  hosts: " "  tasks: " "    - " > "$1"/main.yml
+}
+
 # mkrole - Makes directories and the main.yml for a given role
 mkrole () {
   dirs=(defaults tasks templates files)
@@ -42,13 +52,14 @@ dotodash() {
 }
 
 findflac() {
-  find . -iname *.flac
+  find . -iname '*.flac'
 }
 
 findmp3() {
-  find . -iname *.mp3
+  find . -iname '*.mp3'
 }
 
 gitcheck() {
-    find . -maxdepth 1 -mindepth 1 -type d -exec sh -c '(echo {} && cd {} && git fetch --all; git status -uno && echo)' \;
+    find . -maxdepth 1 -mindepth 1 -type d -exec \
+    sh -c '(echo {} && cd {} && git fetch --all; git status -uno && echo)' \;
 }
