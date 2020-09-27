@@ -1,3 +1,4 @@
+#!/bin/bash
 # ~/.bashrc: executed by bash(1) for non-login shells.
 
 # If not running interactively, don't do anything
@@ -48,8 +49,8 @@ shopt -s globstar
 ###########################################################
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-    if test -r $HOME/.dircolors; then
-	eval "$(dircolors -b $HOME/.dircolors)" 
+    if test -r "$HOME"/.dircolors; then
+	eval "$(dircolors -b "$HOME/.dircolors")"
     else 
 	eval "$(dircolors -b)"
     fi
@@ -67,17 +68,13 @@ if ! shopt -oq posix; then
 fi
 
 ###########################################################
-# SSH 
+# SSH
 ###########################################################
 # Start Keychain for SSH Authentication
-if [ -f "$HOME/.ssh/gaming" ]; then
-    eval "$(keychain --eval --quiet gaming)"
-  elif [ -f "$HOME/.ssh/p50" ]; then
-    eval "$(keychain --eval --quiet p50)"
-  elif [ -f "$HOME/.ssh/x200" ]; then
-    eval "$(keychain --eval --quiet x200)"
-  elif [ -f "$HOME/.ssh/x230" ]; then
-    eval "$(keychain --eval --quiet x230)"
+readarray -d '' ssh_keys < <(find "$HOME/.ssh" -name "*.pub" -execdir basename '{}' .pub ';')
+
+if [ ${#ssh_keys[@]} -ne 0 ]; then
+  eval "$(keychain --eval --quiet "${ssh_keys[@]}")"
 fi
 
 ###########################################################
