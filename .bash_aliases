@@ -7,22 +7,6 @@ alias vdir='vdir --color=auto'
 # Dmesg
 alias dmesg='dmesg --human --color=always'
 
-# Git
-alias gita='git add'
-alias gitb='git branch'
-alias gitc='git commit'
-alias gitcm='git commit -m'
-alias gitco='git checkout'
-alias gitd='git diff'
-alias gitf='git fetch'
-alias gitl='git log'
-alias gitlo='git log --oneline'
-alias gitm='git merge'
-alias gitp='git push'
-alias gitr='git rebase'
-alias gits='git status'
-alias gitu='git unstage'
-
 # Grep
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
@@ -65,6 +49,5 @@ alias celar='clear'
 alias cleawr='clear'
 
 # Utilities
-alias rot13="tr '[A-Za-z]' '[N-ZA-Mn-za-m]'"
 alias tb='nc termbin.com 9999'
 alias wget='wget -c'
