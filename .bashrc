@@ -97,8 +97,8 @@ fi
 # LOAD FILES
 ###########################################################
 # Set custom PS1 prompt
-if [ -f "$HOME/.bash_prompt" ]; then
-    . "$HOME/.bash_prompt"
+if [ -f "$HOME/.bash_psone" ]; then
+    . "$HOME/.bash_psone"
 fi
 
 # Alias definitions.
