@@ -50,9 +50,9 @@ shopt -s globstar
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     if test -r "$HOME"/.dircolors; then
-	eval "$(dircolors -b "$HOME/.dircolors")"
-    else 
-	eval "$(dircolors -b)"
+  eval "$(dircolors -b "$HOME/.dircolors")"
+    else
+  eval "$(dircolors -b)"
     fi
 fi
 
@@ -60,18 +60,20 @@ fi
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-    if [ -f /usr/share/bash-completion/bash_completion ]; then
-      . /usr/share/bash-completion/bash_completion
-    elif [ -f /etc/bash_completion ]; then
-      . /etc/bash_completion
-    fi
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
 fi
 
 ###########################################################
 # SSH
 ###########################################################
 # Start Keychain for SSH Authentication
-readarray -d '' ssh_keys < <(find "$HOME/.ssh" -name "*.pub" -execdir basename '{}' .pub ';')
+if [ -d "$HOME/.ssh" ]; then
+  readarray -d '' ssh_keys < <(find "$HOME/.ssh" -name "*.pub" -execdir basename '{}' .pub ';')
+fi
 
 if [ ${#ssh_keys[@]} -ne 0 ]; then
   eval "$(keychain --eval --quiet "${ssh_keys[@]}")"
@@ -98,15 +100,15 @@ fi
 ###########################################################
 # Set custom PS1 prompt
 if [ -f "$HOME/.bash_psone" ]; then
-    . "$HOME/.bash_psone"
+  . "$HOME/.bash_psone"
 fi
 
 # Alias definitions.
 if [ -f "$HOME/.bash_aliases" ]; then
-    . "$HOME/.bash_aliases"
+  . "$HOME/.bash_aliases"
 fi
 
 # Function definitions.
 if [ -f "$HOME/.bash_functions" ]; then
-    . "$HOME/.bash_functions"
+  . "$HOME/.bash_functions"
 fi
