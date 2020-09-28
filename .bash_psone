@@ -57,12 +57,15 @@ fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
+    xterm-color|*-256color)
+        #PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD/$HOME/~}\007"'
+        PS1="${debian_chroot:+($debian_chroot)}"
+        PS1=${PS1}"[\[${SU}\]\u\[${NC}\]@\[${CNX}\]\h\[${NC}\]:"
+        PS1=${PS1}"\[${Yellow}\]\W\[${NC}\]]\$(__git_ps1 '(%s)')\$ "
+        PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+        ;;
+    *)
+        PS1="${debian_chroot:+($debian_chroot)}"
+        PS1=${PS1}"[\u@\h:\W\]\$(__git_ps1 '(%s)')\$ "
+        ;;
 esac
-
-if [ "$color_prompt" = yes ]; then
-    PS1="${debian_chroot:+($debian_chroot)}[\[${SU}\]\u\[${NC}\]@\[${CNX}\]\h\[${NC}\]:\[${Yellow}\]\W\[${NC}\]]\$(__git_ps1 '(%s)')\$ "
-else
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}[\u@\h:\W\]\$(__git_ps1 '(%s)')\$ "
-fi
-unset color_prompt force_color_prompt
