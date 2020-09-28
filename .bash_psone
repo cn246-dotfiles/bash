@@ -34,9 +34,9 @@ ALERT="${BWhite}${On_Red}"
 
 # Test user type:
 if [[ "${USER}" == "root" ]]; then
-    SU="${Red}"           # User is root.
+    SU="${BRed}"           # User is root.
 elif [[ "${USER}" != "$(logname)" ]]; then
-    SU="${BRed}"          # User is not login user.
+    SU="${BPurple}"          # User is not login user.
 else
     SU="${BBlue}"         # User is normal (well ... most of us are).
 fi
