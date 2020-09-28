@@ -49,11 +49,11 @@ shopt -s globstar
 ###########################################################
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-    if test -r "$HOME"/.dircolors; then
-  eval "$(dircolors -b "$HOME/.dircolors")"
-    else
-  eval "$(dircolors -b)"
-    fi
+  if test -r "$HOME"/.dircolors; then
+    eval "$(dircolors -b "$HOME/.dircolors")"
+  else
+    eval "$(dircolors -b)"
+  fi
 fi
 
 # enable programmable completion features (you don't need to enable
