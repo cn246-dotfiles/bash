@@ -70,13 +70,21 @@ fi
 ###########################################################
 # SSH
 ###########################################################
-# Start Keychain for SSH Authentication
+# Check for ssh keys in ~/.ssh
 if [ -d "$HOME/.ssh" ]; then
   readarray -d '' ssh_keys < <(find "$HOME/.ssh" -name "*.pub" -execdir basename '{}' .pub ';')
 fi
 
 if [ ${#ssh_keys[@]} -ne 0 ]; then
-  eval "$(keychain --eval --quiet "${ssh_keys[@]}")"
+  if [ -f /usr/bin/keychain ]; then
+    eval "$(keychain --eval --quiet "${ssh_keys[@]}")"
+  else
+    runcount="$(pgrep "ssh-agent")"
+    if [ -z "$runcount" ]; then
+      eval "$(ssh-agent -s)"
+      ssh-add "${ssh_keys[@]}"
+    fi
+  fi
 fi
 
 ###########################################################
@@ -111,4 +119,9 @@ fi
 # Function definitions.
 if [ -f "$HOME/.bash_functions" ]; then
   . "$HOME/.bash_functions"
+fi
+
+# Apache modsecurity aliases.
+if [ -f "$HOME/.apache-modsec.alias" ]; then
+  . "$HOME/.apache-modsec.alias"
 fi
