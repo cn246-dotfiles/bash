@@ -3,7 +3,8 @@
 # Environment Variables
 EDITOR=vim
 VISUAL=$EDITOR
-export EDITOR VISUAL
+SUDO_EDITOR=$EDITOR
+export EDITOR VISUAL SUDO_EDITOR
 
 # Enable mouse if less version is 551 or greater.
 less_version="$(less --version | grep -oP '(^less \d{3} )' | cut -d' ' -f2)"
