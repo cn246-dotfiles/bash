@@ -18,15 +18,23 @@ mkplay() {
 
 # mkrole - Makes directories and the main.yml for a given role
 mkrole() {
-  dirs=(defaults tasks templates files)
-  for dir in "${dirs[@]}"; do 
+  dirs=(defaults handlers tasks templates files)
+  for dir in "${dirs[@]}"; do
     mkdir -p "$1"/"$dir";
   done
 
-  for file in "${dirs[@]:0:2}"; do
-    #echo "$file";
+  # Create README
+  printf "%s\n" "# ${1^}" > "$1"/README.md
+
+  # Create main.yml in each directory
+  for file in "${dirs[@]:0:3}"; do
     touch "$1"/"$file"/main.yml;
   done
+
+  lintfile=/home/chuck/Projects/ansible/templates/yamllint
+  if [ -f  "$lintfile" ]; then
+    cp "$lintfile" "$1"/.yamllint;
+  fi
 }
 
 # divider - Create divider the full width of terminal screen
