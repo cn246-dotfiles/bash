@@ -106,22 +106,22 @@ fi
 ###########################################################
 # LOAD FILES
 ###########################################################
-# Set custom PS1 prompt
-if [ -f "$HOME/.bash_psone" ]; then
-  . "$HOME/.bash_psone"
-fi
-
 # Alias definitions.
-if [ -f "$HOME/.bash_aliases" ]; then
-  . "$HOME/.bash_aliases"
+if [ -f "$HOME/.bashrc.d/bash_aliases" ]; then
+  . "$HOME/.bashrc.d/bash_aliases"
 fi
 
 # Function definitions.
-if [ -f "$HOME/.bash_functions" ]; then
-  . "$HOME/.bash_functions"
+if [ -f "$HOME/.bashrc.d/bash_functions" ]; then
+  . "$HOME/.bashrc.d/bash_functions"
+fi
+
+# Set custom PS1 prompt
+if [ -f "$HOME/.bashrc.d/bash_psone" ]; then
+  . "$HOME/.bashrc.d/bash_psone"
 fi
 
 # Apache modsecurity aliases.
 if [ -f "$HOME/.apache-modsec.alias" ]; then
-  . "$HOME/.apache-modsec.alias"
+  . "$HOME/.bashrc.d/apache-modsec.alias"
 fi

@@ -71,3 +71,12 @@ gitcheck() {
     find . -maxdepth 1 -mindepth 1 -type d -exec \
     sh -c '(echo {} && cd {} && git fetch --all; git status -uno && echo)' \;
 }
+
+# Get memory usage of a process
+mem()
+{
+    ps -eo rss,pid,euser,args:100 --sort %mem |\
+    grep -v grep |\
+    grep -i $@ |\
+    awk '{ printf $1/1024 "MB"; $1=""; print }'
+}
