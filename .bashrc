@@ -70,22 +70,31 @@ fi
 ###########################################################
 # SSH
 ###########################################################
-# Check for ssh keys in ~/.ssh
-if [ -d "$HOME/.ssh" ]; then
-  readarray -d '' ssh_keys < <(find "$HOME/.ssh" -name "*.pub" -execdir basename '{}' .pub ';')
+# Ensure a ssh-agent is running so you only have to enter keys once
+if [ ! -S ~/.ssh/ssh_auth_sock ]; then
+  eval "$(ssh-agent)"
+  ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
 fi
+export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
 
-if [ ${#ssh_keys[@]} -ne 0 ]; then
-  if [ -f /usr/bin/keychain ]; then
-    eval "$(keychain --eval --quiet "${ssh_keys[@]}")"
-  else
-    runcount="$(pgrep "ssh-agent")"
-    if [ -z "$runcount" ]; then
-      eval "$(ssh-agent -s)"
-      ssh-add "${ssh_keys[@]}"
-    fi
-  fi
-fi
+# Check for ssh keys in ~/.ssh
+#if [ -d "$HOME/.ssh" ]; then
+#  readarray -d '' ssh_keys < <(find "$HOME/.ssh" -name "*.pub" -execdir basename '{}' .pub ';')
+#fi
+#
+#if [ ${#ssh_keys[@]} -ne 0 ]; then
+#  if [ -f /usr/bin/keychain ]; then
+#    eval "$(keychain --eval --quiet "${ssh_keys[@]}")"
+#  else
+#    runcount="$(pgrep "ssh-agent")"
+#    if [ -z "$runcount" ]; then
+#      eval "$(ssh-agent -s)"
+#      for key in "${ssh_keys[@]}"; do
+#        ssh-add "$HOME/.ssh/$key"
+#      done
+#    fi
+#  fi
+#fi
 
 ###########################################################
 # GPG SSH
