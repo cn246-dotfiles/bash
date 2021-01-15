@@ -44,18 +44,23 @@ shopt -s globstar
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+
 ###########################################################
-#
+# DIRCOLORS
 ###########################################################
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
   if test -r "$HOME"/.dircolors; then
-    eval "$(dircolors -b "$HOME/.dircolors")"
+    eval "$(dircolors -b "$HOME"/.dircolors)"
   else
     eval "$(dircolors -b)"
   fi
 fi
 
+
+###########################################################
+# BASH COMPLETION
+###########################################################
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -67,34 +72,18 @@ if ! shopt -oq posix; then
   fi
 fi
 
+
 ###########################################################
 # SSH
 ###########################################################
 # Ensure a ssh-agent is running so you only have to enter keys once
-if [ ! -S ~/.ssh/ssh_auth_sock ]; then
+if [ ! -S "$HOME"/.ssh/ssh_auth_sock ]; then
   eval "$(ssh-agent)"
-  ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
+  ln -sf "$SSH_AUTH_SOCK" "$HOME"/.ssh/ssh_auth_sock
 fi
-export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
 
-# Check for ssh keys in ~/.ssh
-#if [ -d "$HOME/.ssh" ]; then
-#  readarray -d '' ssh_keys < <(find "$HOME/.ssh" -name "*.pub" -execdir basename '{}' .pub ';')
-#fi
-#
-#if [ ${#ssh_keys[@]} -ne 0 ]; then
-#  if [ -f /usr/bin/keychain ]; then
-#    eval "$(keychain --eval --quiet "${ssh_keys[@]}")"
-#  else
-#    runcount="$(pgrep "ssh-agent")"
-#    if [ -z "$runcount" ]; then
-#      eval "$(ssh-agent -s)"
-#      for key in "${ssh_keys[@]}"; do
-#        ssh-add "$HOME/.ssh/$key"
-#      done
-#    fi
-#  fi
-#fi
+export SSH_AUTH_SOCK="$HOME"/ssh/ssh_auth_sock
+
 
 ###########################################################
 # GPG SSH
@@ -112,22 +101,23 @@ export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
 # Refresh gpg-agent tty in case user switches into an X session
 #gpg-connect-agent updatestartuptty /bye >/dev/null
 
+
 ###########################################################
 # LOAD FILES
 ###########################################################
 # Alias definitions.
-if [ -f "$HOME/.bashrc.d/bash_aliases" ]; then
-  . "$HOME/.bashrc.d/bash_aliases"
+if [ -f "$HOME"/.bashrc.d/bash_aliases ]; then
+  . "$HOME"/.bashrc.d/bash_aliases
 fi
 
 # Function definitions.
-if [ -f "$HOME/.bashrc.d/bash_functions" ]; then
-  . "$HOME/.bashrc.d/bash_functions"
+if [ -f "$HOME"/.bashrc.d/bash_functions ]; then
+  . "$HOME"/.bashrc.d/bash_functions
 fi
 
 # Set custom PS1 prompt
-if [ -f "$HOME/.bashrc.d/bash_psone" ]; then
-  . "$HOME/.bashrc.d/bash_psone"
+if [ -f "$HOME"/.bashrc.d/bash_psone ]; then
+  . "$HOME"/.bashrc.d/bash_psone
 fi
 
 # Apache modsecurity aliases.
