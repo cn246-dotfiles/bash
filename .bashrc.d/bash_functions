@@ -1,11 +1,5 @@
 # Functions
 
-# mknote - Creates a file in a common directory then opens it in vim
-mknote() {
-  notedir="$HOME/Nextcloud/Notes"
-  vim "${notedir}/$1"
-}
-
 # mkplay - Makes directories for the given playbook
 mkplay() {
   dirs=(group_vars host_vars roles)
@@ -59,20 +53,14 @@ dotodash() {
  rename -v 's/. / - /' -- *.{flac,mp3}
 }
 
-findflac() {
-  find . -iname '*.flac'
-}
-
-findmp3() {
-  find . -iname '*.mp3'
-}
-
+# Check all repositories in directory for changes
 gitcheck() {
     find . -maxdepth 1 -mindepth 1 -type d -exec \
     sh -c '(echo {} && cd {} && git fetch --all; git status -uno && echo)' \;
 }
 
 # Get memory usage of a process
+# Call it by: mem apache2
 mem()
 {
     ps -eo rss,pid,euser,args:100 --sort %mem |\
