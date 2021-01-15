@@ -1,5 +1,9 @@
 # Aliases
 
+# Ansible
+alias avv='ansible vault view'
+alias ave='ansible vault edit'
+
 # Dir
 alias dir='dir --color=auto'
 alias vdir='vdir --color=auto'
@@ -18,7 +22,7 @@ alias info='info --vi-keys'
 # iproute2
 alias ip='ip -color'
 
-# List 
+# List
 alias l='ls -CF'
 alias la='ls -A'
 alias ll='ls -alF'
