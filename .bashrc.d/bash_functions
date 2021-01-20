@@ -1,5 +1,13 @@
 # Functions
 
+avv() {
+  ansible-vault view ${@}
+}
+
+ave() {
+  ansible-vault edit ${@}
+}
+
 # mkplay - Makes directories for the given playbook
 mkplay() {
   dirs=(group_vars host_vars roles)
