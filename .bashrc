@@ -76,14 +76,11 @@ fi
 ###########################################################
 # SSH
 ###########################################################
-# Ensure a ssh-agent is running so you only have to enter keys once
-if [ ! -S "$HOME/.ssh/ssh_auth_sock" ]; then
-  eval "$(ssh-agent)"
-  ln -sf "$SSH_AUTH_SOCK" "$HOME/.ssh/ssh_auth_sock"
-fi
+readarray -d '' ssh_keys < <(find "$HOME/.ssh" -name "*.pub" -execdir basename '{}' .pub ';')
 
-export SSH_AUTH_SOCK="$HOME/.ssh/ssh_auth_sock"
-ssh-add -l > /dev/null || ssh-add
+if [ ${#ssh_keys[@]} -ne 0 ]; then
+  eval "$(keychain --eval --quiet "${ssh_keys[@]}")"
+fi
 
 
 ###########################################################
