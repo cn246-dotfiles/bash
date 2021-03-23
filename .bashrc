@@ -76,11 +76,11 @@ fi
 ###########################################################
 # SSH
 ###########################################################
-readarray -d '' ssh_keys < <(find "$HOME/.ssh" -name "*.pub" -execdir basename '{}' .pub ';')
+#readarray -d '' ssh_keys < <(find "$HOME/.ssh" -name "*.pub" -execdir basename '{}' .pub ';')
 
-if [ ${#ssh_keys[@]} -ne 0 ]; then
-  eval "$(keychain --eval --quiet "${ssh_keys[@]}")"
-fi
+#if [ ${#ssh_keys[@]} -ne 0 ]; then
+#  eval "$(keychain --eval --quiet "${ssh_keys[@]}")"
+#fi
 
 
 ###########################################################
