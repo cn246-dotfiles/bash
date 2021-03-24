@@ -76,6 +76,7 @@ fi
 ###########################################################
 # SSH
 ###########################################################
+<<<<<<< HEAD
 #readarray -d '' ssh_keys < <(find "$HOME/.ssh" -name "*.pub" -execdir basename '{}' .pub ';')
 #readarray -d '' ssh_keys < <(find "$HOME/.ssh" -name "*.pub" -execdir basename '{}' .pub ';')
 #
@@ -85,11 +86,34 @@ fi
 #  eval "$(ssh-agent)"
 #  ln -sf "$SSH_AUTH_SOCK" "$HOME/.ssh/ssh_auth_sock"
 #fi
+||||||| merged common ancestors
+=======
+#readarray -d '' ssh_keys < <(find "$HOME/.ssh" -name "*.pub" -execdir basename '{}' .pub ';')
+#
+#
+# Ensure a ssh-agent is running so you only have to enter keys once
+#if [ ! -S "$HOME/.ssh/ssh_auth_sock" ]; then
+#  eval "$(ssh-agent)"
+#  ln -sf "$SSH_AUTH_SOCK" "$HOME/.ssh/ssh_auth_sock"
+#fi
+>>>>>>> Comment out ssh-add stuff
 
+<<<<<<< HEAD
 #if [ ${#ssh_keys[@]} -ne 0 ]; then
 #  eval "$(keychain --eval --quiet "${ssh_keys[@]}")"
 #fi
 #export SSH_AUTH_SOCK="$HOME/.ssh/ssh_auth_sock"
+||||||| merged common ancestors
+=======
+#export SSH_AUTH_SOCK="$HOME/.ssh/ssh_auth_sock"
+
+#if [ ${#ssh_keys[@]} -ne 0 ]; then
+#  #eval "$(keychain --eval --quiet "${ssh_keys[@]}")"
+#  for ssh_key in "${ssh_keys[@]}"; do
+#    echo "ssh-add ${ssh_key}"
+#  done
+#fi
+>>>>>>> Comment out ssh-add stuff
 
 #if [ ${#ssh_keys[@]} -ne 0 ]; then
 #  #eval "$(keychain --eval --quiet "${ssh_keys[@]}")"
