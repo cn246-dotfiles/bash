@@ -1,7 +1,7 @@
 # ~/.profile: executed by the command interpreter for login shells.
 
 # Environment Variables
-EDITOR=vim
+EDITOR=/usr/bin/vim
 VISUAL=$EDITOR
 SUDO_EDITOR=$EDITOR
 export EDITOR VISUAL SUDO_EDITOR
