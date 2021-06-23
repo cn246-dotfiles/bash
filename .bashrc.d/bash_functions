@@ -1,11 +1,30 @@
 # Functions
 
+# avv - ansible vault view
 avv() {
   ansible-vault view ${@}
 }
 
+# ave - ansible vault edit
 ave() {
   ansible-vault edit ${@}
+}
+
+# vaultgrep - Grep ansible vault files
+vaultgrep() {
+  case "$2" in
+    "" ) path=("$HOME/Projects/ansible/homelab");;
+    .  ) path=("$PWD");;
+    *  ) path=($2);;
+  esac
+
+  while IFS= read -r file; do
+    ansible-vault view "$file" | grep --color --extended-regexp "$1"
+    if [[ ${PIPESTATUS[1]} -eq 0 ]]; then
+      printf '%b\n' "\e[1;92m$file\e[0m"
+      echo
+    fi
+  done < <(for i in "${path[@]}"; do grep --max-count=1 --files-with-matches --recursive ';AES256;tier-3' "$i"; done)
 }
 
 # mkplay - Makes directories for the given playbook
