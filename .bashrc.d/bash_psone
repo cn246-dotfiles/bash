@@ -69,3 +69,5 @@ case "$TERM" in
         PS1=${PS1}"[\u@\h:\W\]\$(__git_ps1 '(%s)')\$ "
         ;;
 esac
+
+# vim: syntax=sh ts=4 sw=4 sts=4 sr noet
