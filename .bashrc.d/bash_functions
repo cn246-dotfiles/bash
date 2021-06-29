@@ -1,17 +1,23 @@
+#! /usr/bin/env bash
 # Functions
 
+# avc - ansible vault encrypt
+function avc() {
+  ansible-vault encrypt ${@}
+}
+
 # avv - ansible vault view
-avv() {
+function avv() {
   ansible-vault view ${@}
 }
 
 # ave - ansible vault edit
-ave() {
+function ave() {
   ansible-vault edit ${@}
 }
 
 # vaultgrep - Grep ansible vault files
-vaultgrep() {
+function vaultgrep() {
   case "$2" in
     "" ) path=("$HOME/Projects/ansible/homelab");;
     .  ) path=("$PWD");;
@@ -28,7 +34,7 @@ vaultgrep() {
 }
 
 # mkplay - Makes directories for the given playbook
-mkplay() {
+function mkplay() {
   dirs=(group_vars host_vars roles)
   for dir in "${dirs[@]}"; do
     mkdir -p "$1"/"$dir";
@@ -38,7 +44,7 @@ mkplay() {
 }
 
 # mkrole - Makes directories and the main.yml for a given role
-mkrole() {
+function mkrole() {
   dirs=(defaults handlers tasks templates files)
   for dir in "${dirs[@]}"; do
     mkdir -p "$1"/"$dir";
@@ -60,7 +66,7 @@ mkrole() {
 
 # divider - Create divider the full width of terminal screen
 # Call it by "divider =" for a row of =
-divider() {
+function divider() {
  if [[ -z ${1} ]];
  then
   echo "Requires a character to print as an argument"
@@ -71,31 +77,31 @@ divider() {
 }
 
 # Change name from "01 Song.flac" to "01 - Song.flac"
-addash() {
+function addash() {
  rename -v 's/^(\d{2})/$1 -/' -- *.{flac,mp3}
 }
 
 # Change filename from "01. Song.flac" to "01 - Song.flac"
-dotodash() {
+function dotodash() {
  rename -v 's/. / - /' -- *.{flac,mp3}
 }
 
 # Check all repositories in directory for changes
-gitcheck() {
+function gitcheck() {
     find . -maxdepth 1 -mindepth 1 -type d -exec \
     sh -c '(echo {} && cd {} && git fetch --all; git status -uno && echo)' \;
 }
 
 # Get memory usage of a process
 # Call it by: mem apache2
-mem() {
+function mem() {
     ps -eo rss,pid,euser,args:100 --sort %mem |\
     grep -v grep |\
     grep -i $@ |\
     awk '{ printf $1/1024 "MB"; $1=""; print }'
 }
 
-ix() {
+function ix() {
     local opts
     local OPTIND
     [ -f "$HOME/.netrc" ] && opts='-n'
@@ -119,3 +125,5 @@ ix() {
     }
     curl $opts -F f:1='<-' $* ix.io/$id
 }
+
+# vim: syntax=sh ts=4 sw=4 sts=4 sr noet
