@@ -14,6 +14,9 @@ alias diff='diff --color -u'
 # Dmesg
 alias dmesg='dmesg --human --color=always'
 
+# Firewall
+alias fwlog='sudo journalctl --priority=warning'
+
 # Grep
 alias grep='grep --color=auto' 
 
