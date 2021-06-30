@@ -3,17 +3,17 @@
 
 # avc - ansible vault encrypt
 function avc() {
-  ansible-vault encrypt ${@}
+  ansible-vault encrypt "${@}"
 }
 
 # avv - ansible vault view
 function avv() {
-  ansible-vault view ${@}
+  ansible-vault view "${@}"
 }
 
 # ave - ansible vault edit
 function ave() {
-  ansible-vault edit ${@}
+  ansible-vault edit "${@}"
 }
 
 # vaultgrep - Grep ansible vault files
@@ -21,7 +21,7 @@ function vaultgrep() {
   case "$2" in
     "" ) path=("$HOME/Projects/ansible/homelab");;
     .  ) path=("$PWD");;
-    *  ) path=($2);;
+    *  ) path=("$2");;
   esac
 
   while IFS= read -r file; do
