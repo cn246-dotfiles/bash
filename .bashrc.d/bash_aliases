@@ -8,14 +8,13 @@
 alias dir='dir --color=auto'
 alias vdir='vdir --color=auto'
 
+# Diff
 alias diff='diff --color -u'
 
 # Dmesg
 alias dmesg='dmesg --human --color=always'
 
 # Grep
-alias egrep='egrep --color=auto'
-alias fgrep='fgrep --color=auto'
 alias grep='grep --color=auto' 
 
 # Info
@@ -25,7 +24,7 @@ alias info='info --vi-keys'
 alias ip='ip -color'
 
 # Clear
-alias k='clear'
+alias c='clear'
 
 # List
 alias l='ls -CF'
@@ -33,10 +32,12 @@ alias la='ls -A'
 alias ll='ls -alF'
 alias ls='ls -h --color=auto'
 alias lx='ls -X'
-alias rm='rm -i'
+
+# File Operations
 alias cp='cp -i'
 alias mv='mv -i'
 alias mkdir='mkdir -p'
+alias rm='rm -i'
 
 # Navigation
 alias -- -='cd -'
@@ -50,12 +51,18 @@ alias neofetch='neofetch --disable Model Uptime --colors 4 4 2 6 3 7 --ascii_col
 
 # Python
 alias shttp='python3 -m http.server'
+alias ve='python3 -m venv ./venv'
+alias va='source ./venv/bin/activate'
 
 # Quit
 alias q='exit'
 
 # rsync
 alias rsync='rsync --progress --partial --archive --compress --stats --executability --hard-links'
+
+# update/upgrade
+alias ud='sudo apt update'
+alias ug='sudo apt upgrade'
 
 # Python http server
 alias shttp='python3 -m http.server'
