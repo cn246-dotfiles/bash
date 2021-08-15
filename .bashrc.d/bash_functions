@@ -18,7 +18,8 @@ function ave() {
 
 # vaultgrep - Grep ansible vault files
 function vaultgrep() {
-  case "$2" in
+  #case "$2" in
+  case "${BASH_ARGV[0]}" in
     "" ) path=("$HOME/Projects/ansible/homelab");;
     .  ) path=("$PWD");;
     *  ) path=("$2");;
@@ -27,10 +28,11 @@ function vaultgrep() {
   while IFS= read -r file; do
     ansible-vault view "$file" | grep --color --extended-regexp "$1"
     if [[ ${PIPESTATUS[1]} -eq 0 ]]; then
-      printf '%b\n' "\e[1;92m$file\e[0m"
-      echo
+      printf '%b\n\n' "\e[1;92m$file\e[0m"
     fi
-  done < <(for i in "${path[@]}"; do grep --max-count=1 --files-with-matches --recursive ';AES256;tier-3' "$i"; done)
+  done < <(for i in "${path[@]}"; do
+    grep --max-count=1 --files-with-matches --recursive '$ANSIBLE_VAULT' "$i";
+  done)
 }
 
 # mkplay - Makes directories for the given playbook
@@ -57,16 +59,6 @@ function mkrole() {
   for file in "${dirs[@]:0:3}"; do
     touch "$1"/"$file"/main.yml;
   done
-
-  lintfile=/home/chuck/Projects/ansible/templates/yamllint
-  if [ -f  "$lintfile" ]; then
-    cp "$lintfile" "$1"/.yamllint;
-  fi
-}
-
-# Show nftables logs
-function filterfw() {
-    awk  '/Denied/ { print $1,$2,$3,$7,$8,$14,$15,$22,$23,$24 }'
 }
 
 # divider - Create divider the full width of terminal screen
@@ -77,7 +69,7 @@ function divider() {
   echo "Requires a character to print as an argument"
   return
  fi
- for x in $(seq 1 $(tput cols)); do printf "${1}"; done
+ for x in $(seq 1 "$(tput cols)"); do printf '%s' "${1}"; done
     echo
 }
 
@@ -94,16 +86,21 @@ function dotodash() {
 # Check all repositories in directory for changes
 function gitcheck() {
     find . -maxdepth 1 -mindepth 1 -type d -exec \
-    sh -c '(echo {} && cd {} && git fetch --all; git status -uno && echo)' \;
+    sh -c '(echo $1 && cd $1 && git fetch --all; git status -uno && echo)' _ {} \;
 }
 
 # Get memory usage of a process
 # Call it by: mem apache2
 function mem() {
-    ps -eo rss,pid,euser,args:100 --sort %mem |\
-    grep -v grep |\
-    grep -i $@ |\
-    awk '{ printf $1/1024 "MB"; $1=""; print }'
+    #ps -eo rss,pid,euser,args:100 --sort %mem |\
+    #grep -v grep |\
+    #grep -i "$@" |\
+    #awk '{ printf $1/1024 "MB"; $1=""; print }'
+
+    for pid in $(pgrep "$@"); do
+        ps -o rss -p "$pid" h |\
+        awk -v proc="$*" '{ printf $1/1024 "MB: " $proc ; $1=""; print }'
+done
 }
 
 function ix() {
@@ -113,22 +110,41 @@ function ix() {
     while getopts ":hd:i:n:" x; do
         case $x in
             h) echo "ix [-d ID] [-i ID] [-n N] [opts]"; return;;
-            d) $echo curl $opts -X DELETE ix.io/$OPTARG; return;;
+            d) echo curl $opts -X DELETE ix.io/"$OPTARG"; return;;
             i) opts="$opts -X PUT"; local id="$OPTARG";;
             n) opts="$opts -F read:1=$OPTARG";;
+            *) exit
         esac
     done
-    shift $(($OPTIND - 1))
+    shift $((OPTIND - 1))
     [ -t 0 ] && {
         local filename="$1"
         shift
         [ "$filename" ] && {
-            curl $opts -F f:1=@"$filename" $* ix.io/$id
+            curl "$opts" -F f:1=@"$filename" "$@" ix.io/"$id"
             return
         }
         echo "^C to cancel, ^D to send."
     }
-    curl $opts -F f:1='<-' $* ix.io/$id
+    curl "$opts" -F f:1='<-' "$@" ix.io/"$id"
+}
+
+
+# Show nftables logs
+function filterfw() {
+    awk  '/Denied/ { print $1,$2,$3,\033[01;31m$7\033[0m,$8,$14,$15,$22,$23,$24 }'
+}
+
+function fw_in () {
+  sudo journalctl -f --priority=warning |\
+    /usr/bin/awk '/nftables/ {
+      if($7 == "Inbound") { print $1,$2,$3,$7,$8,$14,$22,$24; }}'
+}
+
+function fw_out () {
+  sudo journalctl -f --priority=warning |\
+    /usr/bin/awk '/nftables/ {
+      if($7 == "Outbound") { print $1,$2,$3,$7,$8,$12,$19,$21; }}'
 }
 
 # vim: syntax=sh ts=4 sw=4 sts=4 sr et
