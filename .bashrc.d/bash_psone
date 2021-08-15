@@ -34,16 +34,16 @@ ALERT="${BWhite}${On_Red}"
 
 # Test user type:
 if [[ "${USER}" == "root" ]]; then
-    SU="${BRed}"           # User is root.
+    SU="${BRed}"          # User is root.
 elif [[ "${USER}" != "$(logname)" ]]; then
-    SU="${BPurple}"          # User is not login user.
+    SU="${BPurple}"       # User is not login user.
 else
     SU="${BBlue}"         # User is normal (well ... most of us are).
 fi
 
 # Test connection type:
 if [ -n "${SSH_CONNECTION}" ]; then
-    CNX="${BOrange}"       # Connected on remote machine, via ssh (good).
+    CNX="${BOrange}"      # Connected on remote machine, via ssh (good).
 elif [[ "${DISPLAY%%:0*}" != "" ]]; then
     CNX="${ALERT}"        # Connected on remote machine, not via ssh (bad).
 else
