@@ -1,9 +1,5 @@
 # Aliases
 
-# Ansible
-#alias avv='ansible-vault view'
-#alias ave='ansible-vault edit'
-
 # Dir
 alias dir='dir --color=auto'
 alias vdir='vdir --color=auto'
