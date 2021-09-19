@@ -4,3 +4,8 @@
 if [ "$SHLVL" = 1 ]; then
     [ -x /usr/bin/clear_console ] && /usr/bin/clear_console -q
 fi
+
+# remove mpd socket
+if [ -f "$HOME/.config/mopidy/socket" ]; then
+  rm -f "$HOME/.config/mopidy/socket"
+fi
