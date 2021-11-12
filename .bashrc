@@ -117,6 +117,10 @@ if [ -f "$HOME"/.bashrc.d/bash_psone ]; then
   . "$HOME"/.bashrc.d/bash_psone
 fi
 
+if [ -f "$HOME"/.bashrc.d/dir_colors ]; then
+  eval "$(dircolors "$HOME"/.bashrc.d/dir_colors)"
+fi
+
 # Apache modsecurity aliases.
 if [ -f "$HOME/.apache-modsec.alias" ]; then
   . "$HOME/.bashrc.d/apache-modsec.alias"
