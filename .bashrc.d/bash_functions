@@ -6,6 +6,11 @@ function avc() {
   ansible-vault encrypt "${@}"
 }
 
+# avc - ansible vault decrypt
+function avd() {
+  ansible-vault decrypt "${@}"
+}
+
 # avv - ansible vault view
 function avv() {
   ansible-vault view "${@}"
@@ -18,8 +23,8 @@ function ave() {
 
 # vaultgrep - Grep ansible vault files
 function vaultgrep() {
-  #case "$2" in
-  case "${BASH_ARGV[0]}" in
+  case "$2" in
+#  case "${BASH_ARGV[0]}" in
     "" ) path=("$HOME/Projects/ansible/homelab");;
     .  ) path=("$PWD");;
     *  ) path=("$2");;
@@ -31,7 +36,7 @@ function vaultgrep() {
       printf '%b\n\n' "\e[1;92m$file\e[0m"
     fi
   done < <(for i in "${path[@]}"; do
-    grep --max-count=1 --files-with-matches --recursive '$ANSIBLE_VAULT' "$i";
+    grep --max-count=1 --files-with-matches --recursive "\$ANSIBLE_VAULT" "$i";
   done)
 }
 
@@ -89,14 +94,8 @@ function gitcheck() {
     sh -c '(echo $1 && cd $1 && git fetch --all; git status -uno && echo)' _ {} \;
 }
 
-# Get memory usage of a process
-# Call it by: mem apache2
+# Get memory usage of a process. Example: mem apache2
 function mem() {
-    #ps -eo rss,pid,euser,args:100 --sort %mem |\
-    #grep -v grep |\
-    #grep -i "$@" |\
-    #awk '{ printf $1/1024 "MB"; $1=""; print }'
-
     for pid in $(pgrep "$@"); do
         ps -o rss -p "$pid" h |\
         awk -v proc="$*" '{ printf $1/1024 "MB: " $proc ; $1=""; print }'
@@ -110,10 +109,10 @@ function ix() {
     while getopts ":hd:i:n:" x; do
         case $x in
             h) echo "ix [-d ID] [-i ID] [-n N] [opts]"; return;;
-            d) echo curl $opts -X DELETE ix.io/"$OPTARG"; return;;
+            d) $echo curl $opts -X DELETE ix.io/"$OPTARG"; return;;
             i) opts="$opts -X PUT"; local id="$OPTARG";;
             n) opts="$opts -F read:1=$OPTARG";;
-            *) exit
+            *) exit 1;;
         esac
     done
     shift $((OPTIND - 1))
@@ -121,30 +120,28 @@ function ix() {
         local filename="$1"
         shift
         [ "$filename" ] && {
-            curl "$opts" -F f:1=@"$filename" "$@" ix.io/"$id"
+            curl "$opts" -F f:1=@"$filename" "$*" ix.io/"$id"
             return
         }
         echo "^C to cancel, ^D to send."
     }
-    curl "$opts" -F f:1='<-' "$@" ix.io/"$id"
+    curl "$opts" -F f:1='<-' "$*" ix.io/"$id"
 }
 
-
-# Show nftables logs
-function filterfw() {
-    awk  '/Denied/ { print $1,$2,$3,\033[01;31m$7\033[0m,$8,$14,$15,$22,$23,$24 }'
+# Print ssl certificate expiration date. Example: ssl_expiry google.com
+function ssl_expiry () {
+    echo | openssl s_client -connect "${1}":443 2> /dev/null | \
+        openssl x509 -noout -enddate
 }
 
-function fw_in () {
-  sudo journalctl -f --priority=warning |\
-    /usr/bin/awk '/nftables/ {
-      if($7 == "Inbound") { print $1,$2,$3,$7,$8,$14,$22,$24; }}'
-}
-
-function fw_out () {
-  sudo journalctl -f --priority=warning |\
-    /usr/bin/awk '/nftables/ {
-      if($7 == "Outbound") { print $1,$2,$3,$7,$8,$12,$19,$21; }}'
+# Print ssl certificate information. Example: cert_check google.com
+function cert_check () {
+    if [[ -f /usr/bin/nmap ]]; then
+        nmap -p 443 --script ssl-cert "${1}"
+    else
+        curl --insecure -vvI https://"${1}" 2>&1 | awk 'BEGIN { cert=0 }
+            /^\* SSL connection/ { cert=1 } /^\*/ { if (cert) print }'
+    fi
 }
 
 # vim: syntax=sh ts=4 sw=4 sts=4 sr et
