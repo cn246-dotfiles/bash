@@ -1,6 +1,3 @@
-#! /usr/bin/env bash
-# Functions
-
 # avc - ansible vault encrypt
 function avc() {
   ansible-vault encrypt "${@}"

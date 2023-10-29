@@ -1,5 +1,3 @@
-# Aliases
-
 # Dir
 alias dir='dir --color=auto'
 alias vdir='vdir --color=auto'
@@ -14,7 +12,7 @@ alias dmesg='dmesg --human --color=always'
 alias fwlog='sudo journalctl --priority=warning'
 
 # Grep
-alias grep='grep --color=auto' 
+alias grep='grep --color=auto'
 
 # Info
 alias info='info --vi-keys'
@@ -63,9 +61,6 @@ alias rsync='rsync --progress --partial --archive --compress --stats --executabi
 alias ud='sudo apt update'
 alias ug='sudo apt upgrade'
 
-# Python http server
-alias shttp='python3 -m http.server'
-
 # Sudo
 alias sudo='sudo '
 
@@ -77,4 +72,4 @@ alias cleawr='clear'
 alias tb='nc termbin.com 9999'
 alias wget='wget -c'
 
-# vim: syntax=sh ts=4 sw=4 sts=4 sr noet
+# vim: syntax=sh ts=2 sw=2 sts=2 sr noet
